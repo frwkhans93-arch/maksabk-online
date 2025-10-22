@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المهام المتاحة - مَكْسَبُك أونلاين</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tasks-page {
+            padding: 100px 5% 50px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .tasks-filter {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.7rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .filter-btn:hover {
+            border-color: #2563eb;
+        }
+
+        .tasks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .task-card-large {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .task-card-large:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .task-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .task-icon-large {
+            font-size: 3rem;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .task-icon-ad { background: #dbeafe; color: #2563eb; }
+        .task-icon-survey { background: #f0fdf4; color: #10b981; }
+        .task-icon-app { background: #fef3c7; color: #d97706; }
+        .task-icon-social { background: #fce7f3; color: #db2777; }
+
+        .task-title h3 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .task-title p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .task-body {
+            padding: 1.5rem;
+        }
+
+        .task-description {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .task-details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .detail-item .label {
+            color: #64748b;
+        }
+
+        .detail-item .value {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .task-requirements {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .task-requirements h4 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .task-requirements ul {
+            color: #64748b;
+            padding-right: 1rem;
+            margin: 0;
+        }
+
+        .task-requirements li {
+            margin-bottom: 0.25rem;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .start-task-btn {
+            flex: 1;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .start-task-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .save-task-btn {
+            background: transparent;
+            border: 2px solid #e5e7eb;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-task-btn:hover {
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icons">💼💰🔄</span>
+                <h1>مَكْسَبُك أونلاين</h1>
+                <p>المهام المتاحة</p>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">🏠 الرئيسية</a>
+                <a href="dashboard.html">📊 لوحة التحكم</a>
+                <a href="wallet.html">💰 المحفظة</a>
+                <a href="login.html" class="btn-login">🔐 تسجيل الدخول</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- صفحة المهام -->
+    <div class="tasks-page">
+        <a href="dashboard.html" class="back-btn">← العودة للوحة التحكم</a>
+        
+        <div class="page-header">
+            <h1>🎯 المهام المتاحة</h1>
+            <p>اختر المهام المناسبة لك وابدأ في كسب النقاط</p>
+        </div>
+
+        <!-- فلتر المهام -->
+        <div class="tasks-filter">
+            <button class="filter-btn active" data-filter="all">الكل</button>
+            <button class="filter-btn" data-filter="ad">📺 الإعلانات</button>
+            <button class="filter-btn" data-filter="survey">📊 الاستبيانات</button>
+            <button class="filter-btn" data-filter="app">📱 التطبيقات</button>
+            <button class="filter-btn" data-filter="social">👥 وسائل التواصل</button>
+        </div>
+
+        <!-- قائمة المهام -->
+        <div class="tasks-container">
+            <!-- مهمة الإعلانات -->
+            <div class="task-card-large" data-type="ad">
+                <div class="task-header">
+                    <div class="task-icon-large task-icon-ad">📺</div>
+                    <div class="task-title">
+                        <h3>مشاهدة إعلان Samsung الجديد</h3>
+                        <p>شاهد الإعلان لمدة 30 ثانية</p>
+                    </div>
+                </div>
+                <div class="task-body">
+                    <p class="task-description">
+                        شاهد الإعلان التجاري لشركة Samsung عن أحدث منتجاتها واحصل على مكافأة فورية.
+                    </p>
+                    
+                    <div class="task-details-grid">
+                        <div class="detail-item">
+                            <span class="label">المكافأة:</span>
+                            <span class="value">10 نقاط</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المدة:</span>
+                            <span class="value">30 ثانية</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المستوى:</span>
+                            <span class="value">مبتدئ</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المتاحة:</span>
+                            <span class="value">5/5</span>
+                        </div>
+                    </div>
+
+                    <div class="task-requirements">
+                        <h4>⚡ متطلبات سريعة:</h4>
+                        <ul>
+                            <li>الاتصال بالإنترنت</li>
+                            <li>الصوت مفعل</li>
+                            <li>عدم تخطي الإعلان</li>
+                        </ul>
+                    </div>
+
+                    <div class="task-actions">
+                        <button class="start-task-btn" onclick="startTask(1)">بدء المهمة</button>
+                        <button class="save-task-btn">💾 حفظ</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مهمة الاستبيانات -->
+            <div class="task-card-large" data-type="survey">
+                <div class="task-header">
+                    <div class="task-icon-large task-icon-survey">📊</div>
+                    <div class="task-title">
+                        <h3>استبيان التسوق الإلكتروني</h3>
+                        <p>شارك برأيك واحصل على مكافأة</p>
+                    </div>
+                </div>
+                <div class="task-body">
+                    <p class="task-description">
+                        شارك في استبيان حول عادات التسوق الإلكتروني وساعد الشركات في فهم احتياجات العملاء.
+                    </p>
+                    
+                    <div class="task-details-grid">
+                        <div class="detail-item">
+                            <span class="label">المكافأة:</span>
+                            <span class="value">50 نقطة</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المدة:</span>
+                            <span class="value">5-7 دقائق</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المستوى:</span>
+                            <span class="value">متوسط</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المتاحة:</span>
+                            <span class="value">3/3</span>
+                        </div>
+                    </div>
+
+                    <div class="task-requirements">
+                        <h4>⚡ متطلبات سريعة:</h4>
+                        <ul>
+                            <li>الإجابة على 15 سؤال</li>
+                            <li>رأيك الشخصي</li>
+                            <li>إكمال جميع الأسئلة</li>
+                        </ul>
+                    </div>
+
+                    <div class="task-actions">
+                        <button class="start-task-btn" onclick="startTask(2)">بدء المهمة</button>
+                        <button class="save-task-btn">💾 حفظ</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- مهمة التطبيقات -->
+            <div class="task-card-large" data-type="app">
+                <div class="task-header">
+                    <div class="task-icon-large task-icon-app">📱</div>
+                    <div class="task-title">
+                        <h3>تثبيت وتجربة تطبيق الألعاب</h3>
+                        <p>حمل التطبيق واكسب مكافأة كبيرة</p>
+                    </div>
+                </div>
+                <div class="task-body">
+                    <p class="task-description">
+                        قم بتحميل تطبيق الألعاب الجديد، العب لمدة 5 دقائق واحصل على مكافأة فورية.
+                    </p>
+                    
+                    <div class="task-details-grid">
+                        <div class="detail-item">
+                            <span class="label">المكافأة:</span>
+                            <span class="value">100 نقطة</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المدة:</span>
+                            <span class="value">10 دقائق</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المستوى:</span>
+                            <span class="value">متقدم</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">المتاحة:</span>
+                            <span class="value">1/1</span>
+                        </div>
+                    </div>
+
+                    <div class="task-requirements">
+                        <h4>⚡ متطلبات سريعة:</h4>
+                        <ul>
+                            <li>مساحة تخزين 150MB</li>
+                            <li>اللعب لمدة 5 دقائق</li>
+                            <li>الوصول للمستوى 3</li>
+                        </ul>
+                    </div>
+
+                    <div class="task-actions">
+                        <button class="start-task-btn" onclick="startTask(3)">بدء المهمة</button>
+                        <button class="save-task-btn">💾 حفظ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // نظام الفلترة
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // إزالة النشط من جميع الأزرار
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                // إضافة النشط للزر المختار
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                const tasks = document.querySelectorAll('.task-card-large');
+                
+                tasks.forEach(task => {
+                    if(filter === 'all' || task.dataset.type === filter) {
+                        task.style.display = 'block';
+                    } else {
+                        task.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        function startTask(taskId) {
+            if(localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            alert(بدأت المهمة #${taskId} سيتم توجيهك لصفحة المهمة...);
+            // هنا سيتم توجيه المستخدم لصفحة تنفيذ المهمة
+        }
+    </script>
+</body>
+</html>
