@@ -3,50 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="style.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-        body { direction: rtl; background: #f0f8ff; color: #333; text-align: center; }
-        
-        .header { background: white; padding: 1rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .logo { font-size: 2rem; color: #2563eb; margin-bottom: 2rem; }
-        
-        .hero { padding: 100px 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
-        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-        
-        .tasks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; padding: 3rem 5%; max-width: 1200px; margin: 0 auto; }
-        .task-card { background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        
-        .btn { background: #10b981; color: white; padding: 12px 25px; border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer; margin-top: 1rem; }
-    </style>
+    <title>مَكْسَبُك أونلاين - اربح من الإنترنت</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="header">
-        <div class="logo">💼💰🔄 مَكْسَبُك أونلاين</div>
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icons">💼💰🔄</span>
+                <h1>مَكْسَبُك أونلاين</h1>
+                <p>اربح من الإنترنت بسهولة</p>
+            </div>
+            <div class="nav-links">
+                <a href="#home">🏠 الرئيسية</a>
+                <a href="#tasks">📋 المهام</a>
+                <a href="login.html" class="btn-login">🔐 تسجيل الدخول</a>
+                <a href="register.html" class="btn-register">🚀 إنشاء حساب</a>
+            </div>
+        </nav>
     </header>
 
-    <section class="hero">
-        <h1>🚀 اربح من الإنترنت بسهولة!</h1>
-        <p>أنشئ حسابك وابدأ الربح من المهام البسيطة</p>
-        <button class="btn">🎯 ابدأ مجاناً</button>
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>🚀 اربح من الإنترنت بسهولة!</h1>
+            <p>أنشئ حسابك وابدأ الربح من المهام البسيطة</p>
+            <button class="cta-button">🎯 ابدأ مجاناً</button>
+        </div>
     </section>
 
-    <section class="tasks-section">
+    <section class="tasks-section" id="tasks">
         <h2>🎯 طرق الربح المتاحة</h2>
         <div class="tasks-grid">
             <div class="task-card">
                 <h3>📺 مشاهدة إعلانات</h3>
                 <p>10 نقاط لكل إعلان</p>
+                <button class="start-task">بدء المهمة</button>
             </div>
             <div class="task-card">
                 <h3>📊 استبيانات</h3>
                 <p>50-200 نقطة</p>
+                <button class="start-task">بدء المهمة</button>
             </div>
             <div class="task-card">
                 <h3>📱 تطبيقات</h3>
                 <p>100-500 نقطة</p>
+                <button class="start-task">بدء المهمة</button>
             </div>
         </div>
     </section>
+
+    <footer class="footer">
+        <p>© 2024 مَكْسَبُك أونلاين. جميع الحقوق محفوظة.</p>
+    </footer>
 </body>
 </html>
