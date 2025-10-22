@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحفظة - مَكْسَبُك أونلاين</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .wallet-page {
+            padding: 100px 5% 50px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .wallet-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .balance-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+            text-align: center;
+        }
+
+        .balance-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .balance-amount {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-points {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .conversion-rate {
+            background: rgba(255,255,255,0.2);
+            padding: 0.7rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .stats-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .stats-card h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: #64748b;
+        }
+
+        .stat-value {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .withdrawal-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+        }
+
+        .withdrawal-section h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .payment-method {
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: #2563eb;
+        }
+
+        .payment-method.selected {
+            border-color: #2563eb;
+            background: #f0f7ff;
+        }
+
+        .payment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .withdrawal-form {
+            display: none;
+        }
+
+        .withdrawal-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .withdraw-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .withdraw-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .withdraw-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .transactions-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .transactions-section h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            background: #f8fafc;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info h4 {
+            color: #1e293b;
+            margin-bottom: 0.3rem;
+        }
+
+        .transaction-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .transaction-amount.positive {
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .transaction-amount.negative {
+            color: #ef4444;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+
+        .min-amount {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icons">💼💰🔄</span>
+                <h1>مَكْسَبُك أونلاين</h1>
+                <p>المحفظة والرصيد</p>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">🏠 الرئيسية</a>
+                <a href="dashboard.html">📊 لوحة التحكم</a>
+                <a href="tasks.html">📋 المهام</a>
+                <a href="login.html" class="btn-login">🔐 تسجيل الدخول</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- صفحة المحفظة -->
+    <div class="wallet-page">
+        <a href="dashboard.html" class="back-btn">← العودة للوحة التحكم</a>
+        
+        <div class="page-header">
+            <h1>💰 المحفظة والرصيد</h1>
+            <p>ادفع أرصدتك وسحب أرباحك بسهولة</p>
+        </div>
+
+        <!-- ملخص الرصيد -->
+        <div class="wallet-summary">
+            <div class="balance-card">
+                <h3>💰 الرصيد المتاح</h3>
+                <div class="balance-amount">$12.50</div>
+                <div class="balance-points">1,250 نقطة</div>
+                <div class="conversion-rate">سعر الصرف: 100 نقطة = $1</div>
+            </div>
+
+            <div class="stats-card">
+                <h3>📊 إحصائيات المحفظة</h3>
+                <div class="stat-item">
+                    <span class="stat-label">إجمالي الأرباح</span>
+                    <span class="stat-value">$45.75</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">المسحوبات</span>
+                    <span class="stat-value">$33.25</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">عمولة الإحالات</span>
+                    <span class="stat-value">$5.50</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">آخر سحب</span>
+                    <span class="stat-value">2024-03-15</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم السحب -->
+        <div class="withdrawal-section">
+            <h3>💳 سحب الأرباح</h3>
+            
+            <div class="payment-methods">
+                <div class="payment-method" data-method="paypal">
+                    <div class="payment-icon">📧</div>
+                    <h4>PayPal</h4>
+                    <p>2-3 أيام عمل</p>
+                </div>
+                
+                <div class="payment-method" data-method="bank">
+                    <div class="payment-icon">🏦</div>
+                    <h4>تحويل بنكي</h4>
+                    <p>3-5 أيام عمل</p>
+                </div>
+                
+                <div class="payment-method" data-method="vodafone">
+                    <div class="payment-icon">📱</div>
+                    <h4>فودافون كاش</h4>
+                    <p>فوري</p>
+                </div>
+            </div>
+
+            <!-- نموذج PayPal -->
+            <div id="paypal-form" class="withdrawal-form">
+                <div class="form-group">
+                    <label for="paypal-email">البريد الإلكتروني لـ PayPal</label>
+                    <input type="email" id="paypal-email" placeholder="example@email.com">
+                </div>
+                <div class="form-group">
+                    <label for="paypal-amount">المبلغ المطلوب ($)</label>
+                    <input type="number" id="paypal-amount" placeholder="10" min="10" max="12.5">
+                    <div class="min-amount">الحد الأدنى للسحب: $10</div>
+                </div>
+                <button class="withdraw-btn" onclick="processWithdrawal('paypal')">سحب via PayPal</button>
+            </div>
+
+            <!-- نموذج البنك -->
+            <div id="bank-form" class="withdrawal-form">
+                <div class="form-group">
+                    <label for="bank-name">اسم البنك</label>
+                    <input type="text" id="bank-name" placeholder="مثال: البنك الأهلي">
+                </div>
+                <div class="form-group">
+                    <label for="account-number">رقم الحساب</label>
+                    <input type="text" id="account-number" placeholder="رقم الحساب البنكي">
+                </div>
+                <div class="form-group">
+                    <label for="bank-amount">المبلغ المطلوب ($)</label>
+                    <input type="number" id="bank-amount" placeholder="10" min="10" max="12.5">
+                    <div class="min-amount">الحد الأدنى للسحب: $10</div>
+                </div>
+                <button class="withdraw-btn" onclick="processWithdrawal('bank')">سحب via البنك</button>
+            </div>
+
+            <!-- نموذج فودافون كاش -->
+            <div id="vodafone-form" class="withdrawal-form">
+                <div class="form-group">
+                    <label for="vodafone-number">رقم فودافون كاش</label>
+                    <input type="tel" id="vodafone-number" placeholder="010XXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label for="vodafone-amount">المبلغ المطلوب ($)</label>
+                    <input type="number" id="vodafone-amount" placeholder="10" min="10" max="12.5">
+                    <div class="min-amount">الحد الأدنى للسحب: $10</div>
+                </div>
+                <button class="withdraw-btn" onclick="processWithdrawal('vodafone')">سحب via فودافون كاش</button>
+            </div>
+        </div>
+
+        <!-- سجل المعاملات -->
+        <div class="transactions-section">
+            <h3>📝 سجل المعاملات</h3>
+            
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <h4>سحب via PayPal</h4>
+                    <p>15 مارس 2024 - قيد المراجعة</p>
+                </div>
+                <div class="transaction-amount negative">-$10.00</div>
+            </div>
+            
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <h4>مهمة تطبيق الألعاب</h4>
+                    <p>14 مارس 2024 - مكتملة</p>
+                </div>
+                <div class="transaction-amount positive">+$1.00</div>
+            </div>
+            
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <h4>استبيان التسوق</h4>
+                    <p>13 مارس 2024 - مكتملة</p>
+                </div>
+                <div class="transaction-amount positive">+$0.50</div>
+            </div>
+            
+            <div class="transaction-item">
+                <div class="transaction-info">
+                    <h4>عمولة إحالة</h4>
+                    <p>12 مارس 2024 - مكتملة</p>
+                </div>
+                <div class="transaction-amount positive">+$1.00</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // اختيار طريقة الدفع
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', function() {
+                // إزالة التحديد من جميع الطرق
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+                // إخفاء جميع النماذج
+                document.querySelectorAll('.withdrawal-form').forEach(form => form.classList.remove('active'));
+                
+                // تحديد الطريقة المختارة
+                this.classList.add('selected');
+                const methodType = this.dataset.method;
+                
+                // إظهار النموذج المناسب
+                document.getElementById(${methodType}-form).classList.add('active');
+            });
+        });
+
+        function processWithdrawal(method) {
+            if(localStorage.getItem('isLoggedIn') !== 'true') {
+                alert('يرجى تسجيل الدخول أولاً');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            let amount;
+            if(method === 'paypal') amount = document.getElementById('paypal-amount').value;
+            if(method === 'bank') amount = document.getElementById('bank-amount').value;
+            if(method === 'vodafone') amount = document.getElementById('vodafone-amount').value;
+
+            if(!amount || amount < 10) {
+                alert('الحد الأدنى للسحب هو $10');
+                return;
+            }
+
+            if(amount > 12.5) {
+                alert('المبلغ المطلوب يتجاوز رصيدك المتاح');
+                return;
+            }
+
+            alert(تم تقديم طلب السحب بمبلغ $${amount} via ${method}. سيتم معالجة طلبك خلال 24-48 ساعة.);
+            
+            // إعادة تعيين النماذج
+            document.querySelectorAll('.withdrawal-form').forEach(form => form.classList.remove('active'));
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            document.querySelectorAll('input').forEach(input => input.value = '');
+        }
+
+        // التحقق من تسجيل الدخول
+        if(localStorage.getItem('isLoggedIn') !== 'true') {
+            // يمكن توجيه المستخدم لصفحة تسجيل الدخول
+        }
+    </script>
+</body>
+</html>
