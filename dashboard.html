@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - مَكْسَبُك أونلاين</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dashboard {
+            padding: 100px 5% 50px;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        .welcome-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-section h3 {
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon { background: #dbeafe; color: #2563eb; }
+        .stat-card:nth-child(2) .stat-icon { background: #f0fdf4; color: #10b981; }
+        .stat-card:nth-child(3) .stat-icon { background: #fef3c7; color: #d97706; }
+        .stat-card:nth-child(4) .stat-icon { background: #fce7f3; color: #db2777; }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .action-card:hover {
+            border-color: #2563eb;
+            transform: translateY(-3px);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .recent-tasks {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .recent-tasks h3 {
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-info h4 {
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .task-info p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .task-reward {
+            background: #10b981;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- الهيدر -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <span class="logo-icons">💼💰🔄</span>
+                <h1>مَكْسَبُك أونلاين</h1>
+                <p>لوحة التحكم</p>
+            </div>
+            <div class="nav-links">
+                <a href="index.html">🏠 الرئيسية</a>
+                <a href="tasks.html">📋 المهام</a>
+                <a href="wallet.html">💰 المحفظة</a>
+                <button class="logout-btn" onclick="logout()">🚪 تسجيل خروج</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- لوحة التحكم -->
+    <div class="dashboard">
+        <!-- قسم الترحيب -->
+        <div class="welcome-section">
+            <h3>مرحباً بك، أحمد! 👋</h3>
+            <p>آخر دخول: اليوم الساعة ١٠:٣٠ ص</p>
+        </div>
+
+        <!-- الإحصائيات -->
+        <div class="stats-cards">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <span class="stat-value">١٥٠ نقطة</span>
+                    <span class="stat-label">رصيد النقاط</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">💵</div>
+                <div class="stat-info">
+                    <span class="stat-value">١.٥٠ $</span>
+                    <span class="stat-label">رصيد الدولار</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <span class="stat-value">١٥ مهمة</span>
+                    <span class="stat-label">مكتملة</span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info">
+                    <span class="stat-value">٣ أشخاص</span>
+                    <span class="stat-label">تمت دعوتهم</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- الإجراءات السريعة -->
+        <div class="quick-actions">
+            <a href="tasks.html" class="action-card">
+                <div class="action-icon">📋</div>
+                <h4>المهام المتاحة</h4>
+                <p>اطلع على المهام الجديدة</p>
+            </a>
+            
+            <a href="wallet.html" class="action-card">
+                <div class="action-icon">💳</div>
+                <h4>سحب الأرباح</h4>
+                <p>اسحب أموالك</p>
+            </a>
+            
+            <a href="#" class="action-card">
+                <div class="action-icon">👥</div>
+                <h4>دعوة الأصدقاء</h4>
+                <p>اكسب عمولة 20%</p>
+            </a>
+            
+            <a href="#" class="action-card">
+                <div class="action-icon">📊</div>
+                <h4>التقارير</h4>
+                <p>شاهد إحصائياتك</p>
+            </a>
+        </div>
+
+        <!-- المهام الأخيرة -->
+        <div class="recent-tasks">
+            <h3>📝 المهام الأخيرة</h3>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <h4>مشاهدة إعلان Samsung</h4>
+                    <p>مكتملة - اليوم ١٠:١٥ ص</p>
+                </div>
+                <span class="task-reward">+10 نقاط</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <h4>استبيان التسوق الإلكتروني</h4>
+                    <p>مكتملة - أمس ٠٣:٢٠ م</p>
+                </div>
+                <span class="task-reward">+50 نقطة</span>
+            </div>
+            
+            <div class="task-item">
+                <div class="task-info">
+                    <h4>تثبيت تطبيق الألعاب</h4>
+                    <p>مكتملة - أمس ١١:٠٠ ص</p>
+                </div>
+                <span class="task-reward">+100 نقطة</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // التحقق من تسجيل الدخول
+        if(localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'login.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        }
+
+        // تحديث اسم المستخدم
+        const userEmail = localStorage.getItem('userEmail');
+        if(userEmail) {
+            document.querySelector('.welcome-section h3').textContent = مرحباً بك، ${userEmail.split('@')[0]}! 👋;
+        }
+    </script>
+</body>
+</html>
